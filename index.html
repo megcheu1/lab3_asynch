@@ -2,42 +2,49 @@
 <html lang="en-US">
 <head>
   <meta charset="utf-8">
-  <title>Earthquake List</title>
+  <title>Seattle Fire Stations</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
     }
     #container {
       display: flex;
       height: 100vh;
       flex-direction: row;
-      align-items: stretch;
     }
     #side-panel {
-      flex-basis: 500px;
-      overflow-y: scroll;
-      padding: 10px;
+      width: 400px;
+      overflow-y: auto;
+      padding: 20px;
       box-sizing: border-box;
+      background-color: #fff;
     }
     #map {
       flex-grow: 1;
     }
+    @media (max-width: 1024px) {
+      #side-panel {
+        display: none;
+      }
+    }
     button {
       margin-bottom: 10px;
+      padding: 8px 12px;
+      font-size: 14px;
     }
     table {
       border-collapse: collapse;
-      border-spacing: 0;
       width: 100%;
       border: 1px solid #ddd;
     }
     th, td {
       text-align: left;
-      padding: 16px;
+      padding: 12px;
     }
     tr:nth-child(even) {
       background-color: #f2f2f2;
@@ -45,104 +52,100 @@
   </style>
 </head>
 <body>
-  <main id="container">
+  <div id="container">
     <div id="side-panel">
-      <h2>Earthquake List</h2>
-      <button>Sort by Magnitude</button>
-      <table>
+      <h2>Seattle Fire Stations</h2>
+      <button id="sort-btn">Sort by Rating</button>
+      <table id="station-table">
         <tr>
-          <th>id</th>
-          <th>magnitude</th>
-          <th>timestamp</th>
+          <th>Name</th>
+          <th>Rating</th>
+          <th>Reviews</th>
         </tr>
       </table>
     </div>
     <div id="map"></div>
-  </main>
+  </div>
   <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoibWVnY2hldSIsImEiOiJjbWhkemdkaWwwOGx0Mm1wdWxkbDg4NHI5In0.WSCNQHpd1COzO4oj5OQ8dg';
-    let map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/satellite-v9',
-      zoom: 5.5,
-      center: [138, 38]
+      style: 'mapbox://styles/mapbox/light-v10',
+      zoom: 11,
+      center: [-122.33, 47.61]
     });
 
     async function geojsonFetch() {
-      let response, earthquakes, japan, table;
-      response = await fetch('assets/earthquakes.geojson');
-      earthquakes = await response.json();
-      response = await fetch('assets/japan.json');
-      japan = await response.json();
+      const fireResponse = await fetch('assets/map.geojson');
+      const firestations = await fireResponse.json();
 
-      map.on('load', function loadingData() {
-        map.addSource('earthquakes', {
+      const seattleResponse = await fetch('assets/seattle.geojson');
+      const seattleBoundary = await seattleResponse.json();
+
+      map.on('load', () => {
+        map.addSource('firestations', {
           type: 'geojson',
-          data: earthquakes
+          data: firestations
         });
+
         map.addLayer({
-          'id': 'earthquakes-layer',
+          'id': 'firestations-layer',
           'type': 'circle',
-          'source': 'earthquakes',
+          'source': 'firestations',
           'paint': {
             'circle-radius': 8,
             'circle-stroke-width': 2,
-            'circle-color': 'red',
+            'circle-color': '#ff6600',
             'circle-stroke-color': 'white'
           }
         });
 
-        map.addSource('japan', {
+        map.addSource('seattle-boundary', {
           type: 'geojson',
-          data: japan
+          data: seattleBoundary
         });
+
         map.addLayer({
-          'id': 'japan-layer',
-          'type': 'fill',
-          'source': 'japan',
+          'id': 'seattle-boundary-line',
+          'type': 'line',
+          'source': 'seattle-boundary',
           'paint': {
-            'fill-color': '#0080ff',
-            'fill-opacity': 0.5
+            'line-color': '#00ffff',
+            'line-width': 3
+          }
+        });
+
+        map.addLayer({
+          'id': 'seattle-boundary-fill',
+          'type': 'fill',
+          'source': 'seattle-boundary',
+          'paint': {
+            'fill-color': '#00ffff',
+            'fill-opacity': 0.2
           }
         });
       });
 
-      table = document.getElementsByTagName("table")[0];
-      let row, cell1, cell2, cell3;
-      for (let i = 0; i < earthquakes.features.length; i++) {
-        row = table.insertRow(-1);
-        cell1 = row.insertCell(0);
-        cell2 = row.insertCell(1);
-        cell3 = row.insertCell(2);
-        cell1.innerHTML = earthquakes.features[i].properties.id;
-        cell2.innerHTML = earthquakes.features[i].properties.mag;
-        cell3.innerHTML = new Date(earthquakes.features[i].properties.time).toLocaleDateString("en-US");
-      }
+      const table = document.getElementById("station-table");
+      firestations.features.forEach(feature => {
+        const row = table.insertRow(-1);
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        cell1.innerHTML = feature.properties.name;
+        cell2.innerHTML = feature.properties["google star rating"];
+        cell3.innerHTML = feature.properties["google review count"];
+      });
 
-      let btn = document.getElementsByTagName("button")[0];
-      btn.addEventListener('click', sortTable);
-
-      function sortTable(e) {
-        let rows, switching, i, x, y, shouldSwitch;
-        switching = true;
-        while (switching) {
-          switching = false;
-          rows = table.rows;
-          for (i = 1; i < (rows.length - 1); i++) {
-            shouldSwitch = false;
-            x = parseFloat(rows[i].getElementsByTagName("td")[1].innerHTML);
-            y = parseFloat(rows[i + 1].getElementsByTagName("td")[1].innerHTML);
-            if (x < y) {
-              shouldSwitch = true;
-              break;
-            }
-          }
-          if (shouldSwitch) {
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-          }
-        }
-      }
+      document.getElementById("sort-btn").addEventListener('click', () => {
+        const rows = Array.from(table.rows).slice(1); // skip header
+        rows.sort((a, b) => {
+          const ratingA = parseFloat(a.cells[1].textContent) || 0;
+          const ratingB = parseFloat(b.cells[1].textContent) || 0;
+          return ratingB - ratingA;
+        });
+        rows.forEach(row => table.appendChild(row));
+      });
     }
 
     geojsonFetch();

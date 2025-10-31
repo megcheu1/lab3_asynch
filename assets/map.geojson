@@ -1,0 +1,201 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 39",
+        "google star rating": 4,
+        "google review count": 4
+      },
+      "geometry": {
+        "coordinates": [
+          -122.2973405570782,
+          47.72130484086418
+        ],
+        "type": "Point"
+      },
+      "id": 0
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 40",
+        "google star rating": 5,
+        "google review count": 4
+      },
+      "geometry": {
+        "coordinates": [
+          -122.29099972883616,
+          47.69680838945905
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 16",
+        "google star rating": 5,
+        "google review count": 2
+      },
+      "geometry": {
+        "coordinates": [
+          -122.32324027116451,
+          47.67909516469791
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 18",
+        "google star rating": 5,
+        "google review count": 7
+      },
+      "geometry": {
+        "coordinates": [
+          -122.37733000000014,
+          47.66835416246684
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 17",
+        "google star rating": 4.8,
+        "google review count": 17
+      },
+      "geometry": {
+        "coordinates": [
+          -122.31665799999968,
+          47.665148161801824
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 9",
+        "google star rating": 5,
+        "google review count": 3
+      },
+      "geometry": {
+        "coordinates": [
+          -122.348930271164,
+          47.65355538646392
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 22",
+        "google star rating": 3.7,
+        "google review count": 3
+      },
+      "geometry": {
+        "coordinates": [
+          -122.32097227116387,
+          47.642974385731605
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 8",
+        "google star rating": 5,
+        "google review count": 6
+      },
+      "geometry": {
+        "coordinates": [
+          -122.35492743393351,
+          47.63112607942824
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 34",
+        "google star rating": 5,
+        "google review count": 3
+      },
+      "geometry": {
+        "coordinates": [
+          -122.29127299999976,
+          47.62601092279664
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 25",
+        "google star rating": 3.2,
+        "google review count": 19
+      },
+      "geometry": {
+        "coordinates": [
+          -122.31514927116379,
+          47.615539616165364
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 2",
+        "google star rating": 4.5,
+        "google review count": 17
+      },
+      "geometry": {
+        "coordinates": [
+          -122.34444000000045,
+          47.616054151612076
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Seattle Fire Station 5",
+        "google star rating": 4.5,
+        "google review count": 14
+      },
+      "geometry": {
+        "coordinates": [
+          -122.33877072883575,
+          47.60358914902562
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+      "name": "Seattle Fire Station 10",
+        "google star rating": 5,
+        "google review count": 8
+      },
+      "geometry": {
+        "coordinates": [
+          -122.32858500000012,
+          47.601131914195236
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
